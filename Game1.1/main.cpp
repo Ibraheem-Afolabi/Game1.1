@@ -8,67 +8,68 @@ int main() {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 16;
 
-
 	sf::RenderWindow window(sf::VideoMode(800, 600), "First Game", sf::Style::Default, settings);
 
-	sf::CircleShape shape(50.0f);
-	shape.setFillColor(sf::Color::Red);
-	shape.setPosition(sf::Vector2f(100, 100));
-	shape.setOutlineThickness(10.9f);
-	shape.setOutlineColor(sf::Color::Green);
-
-	sf::RectangleShape rect(sf::Vector2f(150.f, 50.f));
-	rect.setPosition(sf::Vector2f(250, 150));
-	rect.setFillColor(sf::Color::Red);
-	rect.setOrigin(rect.getSize() / 2.f);
-	rect.setRotation(45);
-
-	sf::CircleShape hexagon(60.f, 6);
-	hexagon.setPosition(sf::Vector2f(300, 300));
-
-	sf::CircleShape oct(50.f, 8);
-	oct.setPosition(100, 400);
-	oct.setFillColor(sf::Color::Magenta);
-
-	sf::RectangleShape diamond(sf::Vector2f(50.f, 50.f));
-	diamond.setPosition(300, 500);
-	diamond.setFillColor(sf::Color::Cyan);
-	diamond.setOrigin(diamond.getSize() / 2.f);
-	diamond.setRotation(50);
-
-	sf::Vertex line[] = {
-		sf::Vertex(sf::Vector2f(10.f, 10.f)),
-		sf::Vertex(sf::Vector2f(250.f, 250.f))
-	};
-
-
 	//--------------- INITIALIZE ----------
+
+	//--------------- LOAD ----------
+	sf::Texture player1texture;
+	sf::Sprite player1sprite;
+
+	if (player1texture.loadFromFile("Assets/Player/Textures/spritesheet2.png")) {
+		std::cout << "Player1 loaded!\n";
+		player1sprite.setTexture(player1texture);
+		//player1sprite.scale(1, 4);
+
+		//x and y axis, Width and Height (They're integers)
+		int Xindex = 0, Yindex = 0;
+
+		player1sprite.setTextureRect(sf::IntRect(Xindex * 64, Yindex * 64, 64, 64));
+	}
+	else {
+		std::cout << "Player image failed to load!\n";
+	}
+	
+	//--------------- LOAD ----------
 
 	//Main game loop
 	while (window.isOpen()) {
 
 		//------------ UPDATE -------------
+
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
-			//------------ UPDATE -------------
+
+
+		}
+	
+		sf::Vector2f oldPosition = player1sprite.getPosition();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))	
+			player1sprite.setPosition(oldPosition + sf::Vector2f(0, -1));
+		
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+			player1sprite.setPosition(oldPosition + sf::Vector2f(0, 1)); 
+		
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
+			player1sprite.setPosition(oldPosition + sf::Vector2f(1, 0));
+		
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+			player1sprite.setPosition(oldPosition + sf::Vector2f(-1, 0));
+
+		//------------ UPDATE -------------
 
 			//------------ DRAW -------------
 			window.clear(sf::Color::Black);
 
-			window.draw(rect);
-			window.draw(shape);
-			window.draw(hexagon);
-			window.draw(oct);
-			window.draw(diamond);
-			window.draw(line, 2, sf::Lines);
+			window.draw(player1sprite);
 
 			window.display();
 			//------------ DRAW -------------
 
-		}
+		
 
 
 
