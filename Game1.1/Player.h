@@ -11,6 +11,10 @@ private:
 	std::vector<sf::RectangleShape> Bullets;
 	float bulletSpeed = 0.7f;
 
+	sf::RectangleShape collisionBox;
+
+	sf::Vector2i size;
+
 public:
 	sf::Sprite sprite;
 

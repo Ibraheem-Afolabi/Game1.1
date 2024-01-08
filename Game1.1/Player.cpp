@@ -4,11 +4,12 @@
 
 
 void Player::Initialize() {
-	//Contex Settings...
-	//sf::ContextSettings settings;
-	//settings.antialiasingLevel = 16;
+	collisionBox.setFillColor(sf::Color::Transparent);
+	collisionBox.setOutlineColor(sf::Color::Red);
+	collisionBox.setOutlineThickness(1);
 
-	//sf::RenderWindow window(sf::VideoMode(800, 600), "First Game", sf::Style::Default, settings);
+	size = sf::Vector2i(64, 64);
+	collisionBox.setSize(sf::Vector2f(size.x, size.y));
 }
 
 void Player::Load() {
@@ -20,7 +21,7 @@ void Player::Load() {
 
 		int Xindex = 0, Yindex = 2;
 
-		sprite.setTextureRect(sf::IntRect(Xindex * 64, Yindex * 64, 64, 64));
+		sprite.setTextureRect(sf::IntRect(Xindex * size.x, Yindex * size.y, size.x, size.y));
 	}
 }
 
@@ -55,10 +56,17 @@ void Player::Update(Enemy& skeleton) {
 
 		Bullets[i].setPosition(Bullets[i].getPosition() + (bulletDirection * bulletSpeed));
 	}
+	collisionBox.setPosition(sprite.getPosition());
+
+	if (Math::checkRectCollision(sprite.getGlobalBounds(), skeleton.skeletonSprite.getGlobalBounds())) {
+		std::cout << "Collision Detected!!!!!!!!!!1" << std::endl;
+	}
+
 }
 
 void Player::Draw(sf::RenderWindow& window) {
 	window.draw(sprite);
+	window.draw(collisionBox);
 
 	for (size_t i = 0; i < Bullets.size(); i++) {
 		window.draw(Bullets[i]);

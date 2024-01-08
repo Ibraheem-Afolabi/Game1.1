@@ -6,6 +6,9 @@ class Enemy
 private:
 	sf::Texture skeletonTexture;
 	
+	sf::RectangleShape collisionBox;
+	sf::Vector2i size;
+
 public:
 	sf::Sprite skeletonSprite;
 
